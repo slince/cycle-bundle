@@ -3,11 +3,14 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "keywords": [
-        "DBAL",
-        "ORM",
-        "Database",
-        "Persistence"
+        "cycle"
+        "cycle-bundle",
+        "dbal",
+        "orm",
+        "database",
+        "persistence"
     ],
+    "description": "Cycle DBAL & ORM Bundle for the Symfony Framework.",
     "autoload": {
         "psr-4": {
             "Slince\\CycleBundle\\": "./"
