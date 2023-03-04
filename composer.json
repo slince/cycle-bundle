@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "license": "MIT",
     "keywords": [
-        "cycle"
+        "cycle",
         "cycle-bundle",
         "dbal",
         "orm",
