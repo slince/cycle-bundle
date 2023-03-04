@@ -19,6 +19,8 @@ $ composer require slince/cycle-bundle
 
 The source of the documentation is available in the [Resources/docs](./Resources/docs) folder.
 
+For more about cycle, please visit [https://cycle-orm.dev/docs](https://cycle-orm.dev/docs) .
+
 ## LICENSE
 
 The MIT license. See [MIT](https://opensource.org/license/mit/)
