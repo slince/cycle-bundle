@@ -21,7 +21,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "cycle/annotated": "^3.2",
         "cycle/entity-behavior": "^1.1",
         "cycle/orm": "^2.2",
