@@ -211,7 +211,7 @@ class XmlFileLoader extends FileLoader
                 'updated-at' => new Behavior\UpdatedAt(
                     $child->getAttribute('field'),
                     $child->getAttribute('column') ?: null,
-                    $child->getAttribute('nullable') ?: false
+                    XmlUtils::phpize($child->getAttribute('nullable')) ?: false
                 ),
                 'soft-delete' => new Behavior\SoftDelete(
                     $child->getAttribute('field'),
