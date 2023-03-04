@@ -1,6 +1,6 @@
 # Schema
 
-In addition to the official `annotation/attribute` support, cycle bundle provides the ability to describe schema using xml
+In addition to the official `annotation/attribute` support, cycle bundle provides the ability to describe schema using `xml`
 
 ## Xml
 
