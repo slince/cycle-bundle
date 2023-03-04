@@ -1,0 +1,5 @@
+imports:
+  - {resource: "./dbal.yaml"}
+  - {resource: "./orm.yaml"}
+  - {resource: "./migration.yaml"}
+  - {resource: "./tools.yaml"}

@@ -1,0 +1,65 @@
+{
+    "name": "slince/cycle-bundle",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "keywords": [
+        "DBAL",
+        "ORM",
+        "Database",
+        "Persistence"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Slince\\CycleBundle\\": "./"
+        }
+    },
+    "authors": [
+        {
+            "name": "slince",
+            "email": "taosikai@yeah.net"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.0",
+        "cycle/annotated": "^3.2",
+        "cycle/entity-behavior": "^1.1",
+        "cycle/orm": "^2.2",
+        "cycle/schema-migrations-generator": "^2.1",
+        "cycle/schema-renderer": "^1.2",
+        "symfony/cache": "^5.4 || ^6.0",
+        "symfony/config": "^5.4 || ^6.0",
+        "symfony/console": "^5.4 || ^6.0",
+        "symfony/dependency-injection": "^5.4 || ^6.0",
+        "symfony/deprecation-contracts": "^2.1 || ^3",
+        "symfony/framework-bundle": "^5.4 || ^6.0",
+        "symfony/service-contracts": "^1.1.1 || ^2.0 || ^3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5.26 || ^10.0",
+        "psalm/plugin-phpunit": "^0.18.4",
+        "psalm/plugin-symfony": "^4",
+        "psr/log": "^1.1.4 || ^2.0 || ^3.0",
+        "symfony/phpunit-bridge": "^6.1",
+        "symfony/property-info": "^5.4 || ^6.0",
+        "symfony/proxy-manager-bridge": "^5.4 || ^6.0",
+        "symfony/security-bundle": "^5.4 || ^6.0",
+        "symfony/twig-bridge": "^5.4 || ^6.0",
+        "symfony/validator": "^5.4 || ^6.0",
+        "symfony/web-profiler-bundle": "^5.4 || ^6.0",
+        "symfony/yaml": "^5.4 || ^6.0",
+        "twig/twig": "^1.34 || ^2.12 || ^3.0",
+        "vimeo/psalm": "^4.30"
+    },
+    "suggest": {
+        "ext-pdo": "*"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "symfony/flex": true
+        },
+        "sort-packages": true
+    }
+}

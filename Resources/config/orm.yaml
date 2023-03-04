@@ -1,0 +1,163 @@
+parameters:
+    cycle.schema.cache_dir: ""
+    cycle.schema.generator_classes:
+        - Cycle\Annotated\TableInheritance
+        - Cycle\Annotated\MergeColumns
+        - Cycle\Schema\Generator\GenerateRelations
+        - Cycle\Schema\Generator\RenderTables
+        - Cycle\Schema\Generator\GenerateModifiers
+        - Cycle\Schema\Generator\ValidateEntities
+        - Cycle\Schema\Generator\RenderTables
+        - Cycle\Schema\Generator\RenderRelations
+        - Cycle\Schema\Generator\RenderModifiers
+        - Cycle\Annotated\MergeIndexes
+        - Cycle\Schema\Generator\GenerateTypecast
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Schema loader
+    cycle.schema.loader.annotation:
+        class: Slince\CycleBundle\Schema\Loader\AnnotationLoader
+        arguments:
+            $locator: "@file_locator"
+        tags: [ "cycle.schema.loader" ]
+
+    cycle.schema.loader.closure:
+        class: Slince\CycleBundle\Schema\Loader\ClosureLoader
+        tags: [ "cycle.schema.loader" ]
+
+    cycle.schema.loader.container:
+        class: Slince\CycleBundle\Schema\Loader\ContainerLoader
+        arguments:
+            $container: "@service_container"
+        tags: [ "cycle.schema.loader" ]
+
+    cycle.schema.loader.directory:
+        class: Slince\CycleBundle\Schema\Loader\DirectoryLoader
+        arguments:
+            $locator: "@file_locator"
+        tags: [ "cycle.schema.loader" ]
+
+    cycle.schema.loader.glob:
+        class: Slince\CycleBundle\Schema\Loader\GlobFileLoader
+        arguments:
+            $locator: "@file_locator"
+        tags: [ "cycle.schema.loader" ]
+
+    cycle.schema.loader.psr4:
+        class: Slince\CycleBundle\Schema\Loader\Psr4DirectoryLoader
+        arguments:
+            $locator: "@file_locator"
+        tags: [ "cycle.schema.loader" ]
+
+    cycle.schema.loader.xml:
+        class: Slince\CycleBundle\Schema\Loader\XmlFileLoader
+        arguments:
+            $locator: "@file_locator"
+            $inflector: "@cycle.core.inflector"
+        tags: [ "cycle.schema.loader" ]
+
+    cycle.schema.loader.resolver:
+        class: Symfony\Component\Config\Loader\LoaderResolver
+        arguments:
+            $loaders: []
+    cycle.schema.loader.delegating:
+        class: Symfony\Component\Config\Loader\DelegatingLoader
+        arguments:
+            $resolver: "@cycle.schema.loader.resolver"
+
+    cycle.schema.loader: "@cycle.schema.loader.delegating"
+
+    cycle.schema.loader.schema_resources:
+        class: Slince\CycleBundle\Schema\Loader\SchemaLoader
+        arguments:
+            $resources: "%cycle.schema.resources%"
+        tags: ["cycle.schema.loader"]
+
+    cycle.schema.compiler:
+        class: Cycle\Schema\Compiler
+
+    cycle.schema.registry_factory:
+        class: Slince\CycleBundle\Schema\Registry\RegistryFactory
+        arguments:
+            $dbal: "@cycle.dbal.database_manager"
+
+    cycle.schema.registry:
+        class: Cycle\Schema\Registry
+        arguments:
+            $dbal: "@cycle.dbal.database_manager"
+
+    Cycle\Schema\Registry: "@cycle.schema.registry"
+
+    cycle.schema.generators:
+        class: Slince\CycleBundle\Schema\GeneratorCollection
+
+    cycle.schema.generator.sync_tables:
+        class: Cycle\Schema\Generator\SyncTables
+
+
+    cycle.schema.generator.apply_relation_defaults:
+        class: Slince\CycleBundle\Schema\Generator\ApplyRelationDefaults
+        arguments:
+            $inflector: "@cycle.core.inflector"
+        tags:
+            - {name: cycle.schema.generator, priority: 5}
+
+    cycle.schema.schema_manager:
+        class: Slince\CycleBundle\Schema\SchemaManager
+        arguments:
+            $resource: "."
+            $options:
+                cache_dir: "%cycle.schema.cache_dir%"
+                resource_type: "schema_resources"
+                debug: "%kernel.debug%"
+        tags:
+            - {name: "container.service_subscriber", key: "cycle.schema.loader", id: "cycle.schema.loader"}
+            - {name: "container.service_subscriber", key: "cycle.schema.registry", id: "cycle.schema.registry"}
+            - {name: "container.service_subscriber", key: "cycle.schema.compiler", id: "cycle.schema.compiler"}
+            - {name: "container.service_subscriber", key: "cycle.schema.generators", id: "cycle.schema.generators"}
+    Slince\CycleBundle\Schema\SchemaManager: "@cycle.schema.schema_manager"
+
+    # Schema instance.
+    cycle.schema.schema:
+        class: Cycle\ORM\Schema
+        factory: ["@cycle.schema.schema_manager", "getSchema"]
+    Cycle\ORM\Schema: "@cycle.schema.schema"
+
+    # Schema render
+    cycle.schema.schema_to_array_converter:
+        class: Cycle\Schema\Renderer\SchemaToArrayConverter
+    Cycle\Schema\Renderer\SchemaToArrayConverter: "@cycle.schema.schema_to_array_converter"
+
+    # Behavior
+    cycle.behavior.container:
+        class: Spiral\Core\Container
+
+    cycle.behavior.command_generator:
+        class: Cycle\ORM\Entity\Behavior\EventDrivenCommandGenerator
+        arguments:
+            $schema: "@cycle.schema.schema"
+            $container: "@cycle.behavior.container"
+    # ORM
+    cycle.orm.orm_factory:
+        class: Cycle\ORM\Factory
+        arguments:
+            $dbal: "@cycle.dbal.database_manager"
+
+    cycle.orm.orm:
+        class: Cycle\ORM\ORM
+        arguments:
+            $factory: "@cycle.orm.orm_factory"
+            $schema: "@cycle.schema.schema"
+            $commandGenerator: "@cycle.behavior.command_generator"
+
+    Cycle\ORM\ORM: "@cycle.orm.orm"
+
+    cycle.orm.entity_manager:
+        class: Cycle\ORM\EntityManager
+        arguments:
+            $orm: "@cycle.orm.orm"
+    Cycle\ORM\EntityManager: "@cycle.orm.entity_manager"

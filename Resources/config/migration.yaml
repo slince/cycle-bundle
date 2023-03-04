@@ -1,0 +1,34 @@
+parameters:
+    cycle.migration.config: []
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Config
+    cycle.migration.config:
+        class: Cycle\Migrations\Config\MigrationConfig
+        arguments: ["%cycle.migration.config%"]
+    Cycle\Migrations\Config\MigrationConfig: "@cycle.migration.config"
+
+    # Migrator
+    cycle.migration.repository:
+        class: Cycle\Migrations\FileRepository
+        arguments:
+            - "@cycle.migration.config"
+    cycle.migration.migrator:
+        class: Cycle\Migrations\Migrator
+        arguments:
+            $config: "@cycle.migration.config"
+            $dbal: "@cycle.dbal.database_manager"
+            $repository: "@cycle.migration.repository"
+    Cycle\Migrations\Migrator: "@cycle.migration.migrator"
+
+    # Migration generator
+    cycle.migration.generate_migrations:
+        class: Cycle\Schema\Generator\Migrations\GenerateMigrations
+        arguments:
+            $repository: "@cycle.migration.repository"
+            $migrationConfig: "@cycle.migration.config"
+

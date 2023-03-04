@@ -1,0 +1,31 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # DBAL config factory
+    cycle.dbal.config_factory:
+        class: Slince\CycleBundle\Database\DatabaseConfigFactory
+
+    cycle.dbal.connection_config:
+        class: Cycle\Database\Config\ConnectionConfig
+        factory: ["@cycle.dbal.config_factory", "createConnectionConfig"]
+        abstract: true
+
+    cycle.dbal.driver_config:
+        class: Cycle\Database\Config\DriverConfig
+        factory: [ "@cycle.dbal.config_factory", "createDriverConfig" ]
+        abstract: true
+
+    cycle.dbal.database_config:
+        class: Cycle\Database\Config\DatabaseConfig
+        factory: [ "@cycle.dbal.config_factory", "createDatabaseConfig" ]
+        arguments:
+            $connections:
+    Cycle\Database\Config\DatabaseConfig: "@cycle.dbal.database_config"
+
+    cycle.dbal.database_manager:
+        class: Cycle\Database\DatabaseManager
+        arguments:
+            $config: "@cycle.dbal.database_config"
+    Cycle\Database\DatabaseManager: "@cycle.dbal.database_manager"

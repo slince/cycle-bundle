@@ -1,0 +1,66 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    cycle.core.inflector_factory.en:
+        class: Doctrine\Inflector\Rules\English\InflectorFactory
+        factory: [Doctrine\Inflector\InflectorFactory, 'create']
+
+    cycle.core.inflector:
+        class: Doctrine\Inflector\Inflector
+        factory: ['@cycle.core.inflector_factory.en', 'build']
+
+    # Dbal command
+    cycle.command.dbal.list:
+        class: Slince\CycleBundle\Command\Database\ListCommand
+        tags: ["console.command"]
+
+    cycle.command.dbal.table:
+        class: Slince\CycleBundle\Command\Database\TableCommand
+        tags: [ "console.command" ]
+
+    # Migration commands
+    cycle.command.migration.init:
+        class: Slince\CycleBundle\Command\Migration\InitCommand
+        tags: [ "console.command" ]
+
+    cycle.command.migration.migrate:
+        class: Slince\CycleBundle\Command\Migration\MigrateCommand
+        tags: [ "console.command" ]
+
+    cycle.command.migration.replay:
+        class: Slince\CycleBundle\Command\Migration\ReplayCommand
+        tags: [ "console.command" ]
+
+    cycle.command.migration.rollback:
+        class: Slince\CycleBundle\Command\Migration\RollbackCommand
+        tags: [ "console.command" ]
+
+    cycle.command.migration.status:
+        class: Slince\CycleBundle\Command\Migration\StatusCommand
+        tags: [ "console.command" ]
+
+    # Schema commands
+    cycle.command.schema.migrate:
+        class: Slince\CycleBundle\Command\Schema\MigrateCommand
+        arguments:
+            $registryFactory: "@cycle.schema.registry_factory"
+            $migrations: "@cycle.migration.generate_migrations"
+        tags: [ "console.command" ]
+
+    cycle.command.schema.render:
+        class: Slince\CycleBundle\Command\Schema\RenderCommand
+        tags: [ "console.command" ]
+
+    cycle.command.schema.sync:
+        class: Slince\CycleBundle\Command\Schema\SyncCommand
+        arguments:
+            $registryFactory: "@cycle.schema.registry_factory"
+            $syncTables: "@cycle.schema.generator.sync_tables"
+
+        tags: [ "console.command" ]
+
+    cycle.command.schema.update:
+        class: Slince\CycleBundle\Command\Schema\UpdateCommand
+        tags: [ "console.command" ]
