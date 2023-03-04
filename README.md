@@ -3,7 +3,7 @@
 Cycle DBAL & ORM Bundle for the Symfony Framework.
 
 
-[![Build Status](https://img.shields.io/github/workflow/status/slince/cycle-bundle/ci?style=flat-square)](https://github.com/slince/cycle-bundle/actions)
+[![Build Status](https://img.shields.io/github/workflow/status/slince/cycle-bundle/ci.yaml?branch=master&style=flat-square)](https://github.com/slince/cycle-bundle/actions)
 [![Latest Stable Version](https://img.shields.io/packagist/v/slince/cycle-bundle.svg?style=flat-square&label=stable)](https://packagist.org/packages/slince/cycle-bundle)
 [![LICENSE](https://img.shields.io/github/license/slince/cycle-bundle?style=flat-square)](https://opensource.org/license/mit/)
 
