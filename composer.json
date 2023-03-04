@@ -55,7 +55,8 @@
         "vimeo/psalm": "^4.30"
     },
     "suggest": {
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "ext-dom": "*"
     },
     "config": {
         "allow-plugins": {
